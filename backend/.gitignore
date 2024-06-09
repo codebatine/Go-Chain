@@ -1,0 +1,26 @@
+# Node.js
+node_modules/
+package-lock.json
+
+# Environment
+.env*
+dump.rdb
+
+# MongoDB
+data/
+
+# Build
+**/dist/
+**/build/
+
+# Testing
+/coverage
+/.jest
+/test-results
+
+# VSC
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
