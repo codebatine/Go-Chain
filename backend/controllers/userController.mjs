@@ -1,6 +1,8 @@
 // @desc Register a new user
 // @route POST /api/auth/register
 // @access Public
+import { registerUser, authenticateUser } from '../services/userService.mjs';
+
 export const register = async (req, res, next) => {
   const { username, password, role } = req.body;
   try {

@@ -10,13 +10,13 @@ import { initializeNode } from './services/networkService.mjs';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5010;
 
 app.use(bodyParser.json());
 app.use(express.json());
 
 app.use('/api', blockchainRoutes);
-app.use('/api', transactionRoutes);
+app.use('/api/transactions', transactionRoutes);
 app.use('/api/auth', userRoutes);
 
 mongoose
