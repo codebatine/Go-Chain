@@ -5,6 +5,13 @@ import { registerUser, authenticateUser } from '../services/userService.mjs';
 
 export const register = async (req, res, next) => {
   const { username, password, role } = req.body;
+
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json({ error: 'Username and password are required' });
+  }
+
   try {
     const user = await registerUser(username, password, role);
     res.status(201).json(user);
@@ -18,6 +25,13 @@ export const register = async (req, res, next) => {
 // @access Public
 export const login = async (req, res, next) => {
   const { username, password } = req.body;
+
+  if (!username || !password) {
+    return res
+      .status(400)
+      .json({ error: 'Username and password are required' });
+  }
+
   try {
     const { user, token } = await authenticateUser(username, password);
     res.json({ user, token });
