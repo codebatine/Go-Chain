@@ -45,3 +45,7 @@ export const getUsersService = async () => {
 export const updateUserService = async (userId, userData) => {
   return User.findByIdAndUpdate(userId, userData, { new: true });
 };
+
+export const getUserByEmail = async (email) => {
+  return User.findOne({ email });
+};

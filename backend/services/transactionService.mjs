@@ -28,6 +28,5 @@ export const createTransaction = (sender, recipient, amount) => {
 };
 
 export const getValidTransactions = () => {
-  // Validate if needed
   return transactionPool;
 };

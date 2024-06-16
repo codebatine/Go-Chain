@@ -13,7 +13,7 @@ export const mineBlock = (minerAddress) => {
   const rewardTransaction = {
     sender: 'system',
     recipient: minerAddress,
-    amount: 1, // Reward amount for mining
+    amount: 1,
     timestamp: Date.now(),
   };
   transactions.push(rewardTransaction);
