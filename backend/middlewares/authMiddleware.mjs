@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const authMiddleware = (req, res, next) => {
+export const protect = (req, res, next) => {
   const token = req.headers['authorization'];
   if (!token) return res.status(403).send('No token provided.');
 
@@ -13,4 +13,12 @@ export const authMiddleware = (req, res, next) => {
     req.userRole = decoded.role;
     next();
   });
+};
+
+export const admin = (req, res, next) => {
+  if (req.userRole && req.userRole === 'admin') {
+    next();
+  } else {
+    res.status(403).send('User is not an admin.');
+  }
 };

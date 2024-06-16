@@ -8,7 +8,7 @@ import transactionRoutes from './routes/transactionRoutes.mjs';
 import userRoutes from './routes/userRoutes.mjs';
 import { initializeNode } from './services/networkService.mjs';
 import { connectDb } from './data/mongo.mjs';
-import { errorHandler } from './middleware/errorHandler.mjs';
+import errorHandler from './middlewares/errorHandler.mjs';
 
 dotenv.config();
 

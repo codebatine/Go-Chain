@@ -3,11 +3,11 @@ import {
   createNewTransaction,
   getTransactions,
 } from '../controllers/transactionController.mjs';
-import { authMiddleware } from '../middlewares/authMiddleware.mjs';
+import { protect } from '../middlewares/authMiddleware.mjs';
 
 const router = express.Router();
 
-router.post('/transactions', authMiddleware, createNewTransaction);
-router.get('/transactions', authMiddleware, getTransactions);
+router.post('/transactions', protect, createNewTransaction);
+router.get('/transactions', protect, getTransactions);
 
 export default router;

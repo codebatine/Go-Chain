@@ -1,72 +1,82 @@
-import User from '../models/User.mjs';
-import {
-  registerUser,
-  authenticateUser,
-  createUser,
-  deleteUser,
-  getUser,
-  getUsers,
-  updateUser,
-} from '../services/userService.mjs';
+import * as userService from '../services/userService.mjs';
+import { asyncHandler } from '../middlewares/asyncHandler.mjs';
 
-// Existing code...
+// @desc Login user
+// @route POST /api/auth/login
+// @access Public
+export const login = asyncHandler(async (req, res, next) => {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return next(new ErrorResponse('Please provide an email and password', 400));
+  }
+
+  const user = await userService.getUserByEmail(email);
+
+  if (!user) {
+    return next(new ErrorResponse('Invalid credentials', 401));
+  }
+  const isMatch = await user.matchPassword(password);
+
+  if (!isMatch) {
+    return next(new ErrorResponse('Invalid credentials', 401));
+  }
+
+  const token = user.getSignedJwtToken();
+
+  res.status(200).json({ success: true, token });
+});
+
+// @desc Get current user
+// @route GET /api/auth/me
+// @access Private
+export const getMe = asyncHandler(async (req, res, next) => {
+  const user = await userService.getUser(req.userId);
+  if (!user) {
+    return next(new ErrorResponse(`No user found with id: ${req.userId}`));
+  }
+  res.status(200).json({ success: true, statusCode: 200, data: user });
+});
 
 // @desc Create a new user
 // @route POST /api/auth/users
 // @access Private/Admin
-export const createUser = async (req, res, next) => {
-  try {
-    const user = await createUser(req.body);
-    res.status(201).json(user);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
+export const createUser = asyncHandler(async (req, res, next) => {
+  const user = await userService.createUser(req.body);
+  res.status(201).json({ success: true, statusCode: 201, data: user });
+});
 
 // @desc Delete a user
 // @route DELETE /api/auth/users/:id
 // @access Private/Admin
-export const deleteUser = async (req, res, next) => {
-  try {
-    await deleteUser(req.params.id);
-    res.status(204).json({ message: 'User deleted' });
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
+export const deleteUser = asyncHandler(async (req, res, next) => {
+  await userService.deleteUser(req.params.id);
+  res.status(204).send();
+});
 
 // @desc Get a user
 // @route GET /api/auth/users/:id
 // @access Private/Admin
-export const getUser = async (req, res, next) => {
-  try {
-    const user = await getUser(req.params.id);
-    res.json(user);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
+export const getUser = asyncHandler(async (req, res, next) => {
+  const user = await userService.getUser(req.params.id);
+  if (!user) {
+    return next(new ErrorResponse(`No user found with id: ${req.params.id}`));
   }
-};
+  res.status(200).json({ success: true, statusCode: 200, data: user });
+});
 
 // @desc Get all users
 // @route GET /api/auth/users
 // @access Private/Admin
-export const getUsers = async (req, res, next) => {
-  try {
-    const users = await getUsers();
-    res.json(users);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
+export const getUsers = asyncHandler(async (req, res, next) => {
+  const users = await userService.getUsers();
+  res.status(200).json({ success: true, statusCode: 200, data: users });
+});
 
 // @desc Update a user
 // @route PUT /api/auth/users/:id
 // @access Private/Admin
-export const updateUser = async (req, res, next) => {
-  try {
-    const user = await updateUser(req.params.id, req.body);
-    res.json(user);
-  } catch (error) {
-    res.status(400).json({ error: error.message });
-  }
-};
+export const updateUser = asyncHandler(async (req, res, next) => {
+  await userService.updateUser(req.params.id, req.body);
+  res.status(204).send();
+});
