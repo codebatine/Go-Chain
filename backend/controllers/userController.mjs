@@ -1,51 +1,70 @@
-// @desc Register a new user
-// @route POST /api/auth/register
-// @access Public
-import { registerUser, authenticateUser } from '../services/userService.mjs';
+import User from '../models/User.mjs';
+import {
+  registerUser,
+  authenticateUser,
+  createUser,
+  deleteUser,
+  getUser,
+  getUsers,
+  updateUser,
+} from '../services/userService.mjs';
 
-export const register = async (req, res, next) => {
-  const { username, password, role } = req.body;
+// Existing code...
 
-  if (!username || !password) {
-    return res
-      .status(400)
-      .json({ error: 'Username and password are required' });
-  }
-
+// @desc Create a new user
+// @route POST /api/auth/users
+// @access Private/Admin
+export const createUser = async (req, res, next) => {
   try {
-    const user = await registerUser(username, password, role);
+    const user = await createUser(req.body);
     res.status(201).json(user);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-// @desc Login a user
-// @route POST /api/auth/login
-// @access Public
-export const login = async (req, res, next) => {
-  const { username, password } = req.body;
-
-  if (!username || !password) {
-    return res
-      .status(400)
-      .json({ error: 'Username and password are required' });
-  }
-
+// @desc Delete a user
+// @route DELETE /api/auth/users/:id
+// @access Private/Admin
+export const deleteUser = async (req, res, next) => {
   try {
-    const { user, token } = await authenticateUser(username, password);
-    res.json({ user, token });
+    await deleteUser(req.params.id);
+    res.status(204).json({ message: 'User deleted' });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
 };
 
-// @desc Get user profile
-// @route GET /api/register
-// @access Public
-export const getMe = async (req, res, next) => {
+// @desc Get a user
+// @route GET /api/auth/users/:id
+// @access Private/Admin
+export const getUser = async (req, res, next) => {
   try {
-    const user = await getUserById(req.userId);
+    const user = await getUser(req.params.id);
+    res.json(user);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// @desc Get all users
+// @route GET /api/auth/users
+// @access Private/Admin
+export const getUsers = async (req, res, next) => {
+  try {
+    const users = await getUsers();
+    res.json(users);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+// @desc Update a user
+// @route PUT /api/auth/users/:id
+// @access Private/Admin
+export const updateUser = async (req, res, next) => {
+  try {
+    const user = await updateUser(req.params.id, req.body);
     res.json(user);
   } catch (error) {
     res.status(400).json({ error: error.message });

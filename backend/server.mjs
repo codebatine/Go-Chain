@@ -8,6 +8,7 @@ import transactionRoutes from './routes/transactionRoutes.mjs';
 import userRoutes from './routes/userRoutes.mjs';
 import { initializeNode } from './services/networkService.mjs';
 import { connectDb } from './data/mongo.mjs';
+import { errorHandler } from './middleware/errorHandler.mjs';
 
 dotenv.config();
 
@@ -21,6 +22,8 @@ app.use(express.json());
 app.use('/api', blockchainRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/auth', userRoutes);
+
+app.use(errorHandler);
 
 // mongoose
 //   .connect(process.env.MONGO_URI)
