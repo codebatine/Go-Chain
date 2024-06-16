@@ -2,9 +2,21 @@ import mongoose from 'mongoose';
 import bcrypt from 'bcrypt';
 
 const userSchema = new mongoose.Schema({
-  username: { type: String, unique: true },
-  password: String,
-  role: String,
+  username: {
+    type: String,
+    unique: true,
+    required: [true, 'Username is required'],
+  },
+  password: {
+    type: String,
+    required: [true, 'Password is required'],
+    minlength: [6, 'Password should be at least 6 characters long'],
+  },
+  role: {
+    type: String,
+    enum: ['user', 'manager'],
+    default: 'user',
+  },
 });
 
 userSchema.pre('save', function (next) {
