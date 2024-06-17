@@ -1,11 +1,12 @@
 import * as userService from '../services/userService.mjs';
 import { asyncHandler } from '../middlewares/asyncHandler.mjs';
+import ErrorResponse from '../utilities/errorResponse.mjs';
 
 // @desc Register user
 // @route POST /api/auth/register
 // @access Public
 export const register = asyncHandler(async (req, res, next) => {
-  const { name, username, email, password } = req.body;
+  const { name, username, email, password, role } = req.body; // Add role to the destructured properties
   const userExists = await userService.getUserByEmail(email);
   if (userExists) {
     return next(new ErrorResponse('User already exists', 400));
@@ -15,6 +16,7 @@ export const register = asyncHandler(async (req, res, next) => {
     username,
     email,
     password,
+    role, // Add role to the user creation service
   });
   if (user) {
     const token = user.getSignedJwtToken();

@@ -23,6 +23,15 @@ const userSchema = new mongoose.Schema({
     type: Date,
     default: Date.now,
   },
+  email: {
+    type: String,
+    required: [true, 'Please add an email'],
+    unique: true,
+    match: [
+      /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
+      'Please add a valid email',
+    ],
+  },
   role: {
     type: String,
     enum: ['user', 'manager'],
@@ -40,10 +49,12 @@ userSchema.pre('save', function (next) {
   });
 });
 
-userSchema.methods.comparePassword = function (candidatePassword, callback) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    if (err) return callback(err);
-    callback(null, isMatch);
+userSchema.methods.matchPassword = function (candidatePassword) {
+  return new Promise((resolve, reject) => {
+    bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+      if (err) reject(err);
+      resolve(isMatch);
+    });
   });
 };
 

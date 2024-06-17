@@ -5,8 +5,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-export const registerUserService = async (username, password, role) => {
-  const user = new User({ username, password, role });
+export const registerUserService = async (username, password, email, role) => {
+  const user = new User({ username, password, email, role });
   await user.save();
   return user;
 };
@@ -47,5 +47,5 @@ export const updateUserService = async (userId, userData) => {
 };
 
 export const getUserByEmail = async (email) => {
-  return User.findOne({ email });
+  return User.findOne({ email }).select('+password');
 };
