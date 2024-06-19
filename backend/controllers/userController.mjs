@@ -96,6 +96,31 @@ export const getUsers = asyncHandler(async (req, res, next) => {
 // @route PUT /api/auth/users/:id
 // @access Private/Admin
 export const updateUser = asyncHandler(async (req, res, next) => {
-  await userService.updateUser(req.params.id, req.body);
-  res.status(204).send();
+  const { email, password } = req.body;
+
+  // Get the user
+  const user = await userService.getUser(req.params.id);
+  if (!user) {
+    return next(new ErrorResponse(`No user found with id: ${req.params.id}`));
+  }
+
+  // If email is provided and it's different from the current email
+  if (email && user.email !== email) {
+    const userExists = await userService.getUserByEmail(email);
+    if (userExists) {
+      return next(new ErrorResponse('Email already in use', 400));
+    }
+    user.email = email;
+  }
+
+  // If password is provided
+  if (password) {
+    // You might want to add some password strength checks here
+    user.password = password;
+  }
+
+  // Update the user
+  await userService.updateUser(req.params.id, user);
+
+  res.status(200).json({ success: true, statusCode: 200, data: user });
 });

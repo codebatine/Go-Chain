@@ -1,24 +1,30 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import { asyncHandler } from './asyncHandler.mjs';
+import ErrorResponse from '../utilities/errorResponse.mjs';
 
 dotenv.config();
 
-export const protect = (req, res, next) => {
+export const protect = asyncHandler(async (req, res, next) => {
   const token = req.headers['authorization'];
-  if (!token) return res.status(403).send('No token provided.');
+  if (!token) {
+    return next(new ErrorResponse('No token provided.', 403));
+  }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) return res.status(500).send('Failed to authenticate token.');
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.userId = decoded.id;
     req.userRole = decoded.role;
     next();
-  });
-};
+  } catch (err) {
+    return next(new ErrorResponse('Failed to authenticate token.', 500));
+  }
+});
 
-export const admin = (req, res, next) => {
+export const admin = asyncHandler((req, res, next) => {
   if (req.userRole && req.userRole === 'admin') {
     next();
   } else {
-    res.status(403).send('User is not an admin.');
+    return next(new ErrorResponse('User is not an admin.', 403));
   }
-};
+});
