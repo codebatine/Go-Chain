@@ -11,7 +11,7 @@ const Mine = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Mine Page</h1>
       <button onClick={handleMine}>Mine Block</button>
       <div>
