@@ -17,7 +17,7 @@ export const registerUser = async (name, username, email, password, role) => {
   } catch (error) {
     const handledError = handleApiError(error);
     console.error('Error registering user:', handledError.message);
-    throw handledError; // Re-throw the error so the calling function can handle it
+    throw handledError;
   }
 };
 
@@ -32,7 +32,7 @@ export const loginUser = async (email, password) => {
   } catch (error) {
     const handledError = handleApiError(error);
     console.error('Error logging in user:', handledError.message);
-    throw handledError; // Re-throw the error so the calling function can handle it
+    throw handledError;
   }
 };
 
@@ -48,7 +48,7 @@ export const getCurrentUser = async (token) => {
   } catch (error) {
     const handledError = handleApiError(error);
     console.error('Error fetching current user:', handledError.message);
-    throw handledError; // Re-throw the error so the calling function can handle it
+    throw handledError;
   }
 };
 
@@ -64,7 +64,7 @@ export const createUser = async (userData, token) => {
   } catch (error) {
     const handledError = handleApiError(error);
     console.error('Error creating user:', handledError.message);
-    throw handledError; // Re-throw the error so the calling function can handle it
+    throw handledError;
   }
 };
 
@@ -79,7 +79,7 @@ export const deleteUser = async (userId, token) => {
   } catch (error) {
     const handledError = handleApiError(error);
     console.error('Error deleting user:', handledError.message);
-    throw handledError; // Re-throw the error so the calling function can handle it
+    throw handledError;
   }
 };
 
@@ -95,7 +95,7 @@ export const getUserById = async (userId, token) => {
   } catch (error) {
     const handledError = handleApiError(error);
     console.error('Error fetching user:', handledError.message);
-    throw handledError; // Re-throw the error so the calling function can handle it
+    throw handledError;
   }
 };
 
@@ -111,7 +111,7 @@ export const getUsers = async (token) => {
   } catch (error) {
     const handledError = handleApiError(error);
     console.error('Error fetching users:', handledError.message);
-    throw handledError; // Re-throw the error so the calling function can handle it
+    throw handledError;
   }
 };
 
@@ -127,6 +127,6 @@ export const updateUser = async (userId, userData, token) => {
   } catch (error) {
     const handledError = handleApiError(error);
     console.error('Error updating user:', handledError.message);
-    throw handledError; // Re-throw the error so the calling function can handle it
+    throw handledError;
   }
 };

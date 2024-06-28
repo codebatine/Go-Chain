@@ -1,25 +1,29 @@
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Home from '../Pages/Home.jsx';
-import Explorer from '../Pages/Explorer.jsx';
-import Transact from '../Pages/Transact.jsx';
-import Mine from '../Pages/Mine.jsx';
-import NotFound from '../Pages/NotFound.jsx';
-import Login from '../Pages/Login.jsx';
-import Register from '../Pages/Register.jsx';
-import Dashboard from '../Pages/Dashboard.jsx';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import Home from '../Pages/Home';
+import Explorer from '../Pages/Explorer';
+import Transact from '../Pages/Transact';
+import Mine from '../Pages/Mine';
+import NotFound from '../Pages/NotFound';
+import Login from '../Pages/Login';
+import Register from '../Pages/Register';
+import Dashboard from '../Pages/Dashboard';
 
 const AppRouter = () => (
   <Router>
-    <Switch>
-      <Route exact path="/" component={Home} />
-      <Route path="/explorer" component={Explorer} />
-      <Route path="/transact" component={Transact} />
-      <Route path="/mine" component={Mine} />
-      <Route path="/login" component={Login} />
-      <Route path="/register" component={Register} />
-      <Route path="/dashboard" component={Dashboard} />
-      <Route component={NotFound} />
-    </Switch>
+    <Header />
+    <Routes>
+      <Route path="/" element={<Home />} />
+      <Route path="/explorer" element={<Explorer />} />
+      <Route path="/transact" element={<Transact />} />
+      <Route path="/mine" element={<Mine />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/dashboard" element={<Dashboard />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+    <Footer />
   </Router>
 );
 
