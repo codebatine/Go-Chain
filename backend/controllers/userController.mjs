@@ -16,7 +16,7 @@ export const register = asyncHandler(async (req, res, next) => {
     username,
     email,
     password,
-    role, // Add role to the user creation service
+    role,
   });
   if (user) {
     const token = user.getSignedJwtToken();
@@ -50,9 +50,10 @@ export const login = asyncHandler(async (req, res, next) => {
 // @route GET /api/auth/me
 // @access Private
 export const getMe = asyncHandler(async (req, res, next) => {
-  const user = await userService.getUser(req.userId);
+  console.log('req.userId:', req.userId); // Log the userId
+  const user = await userService.getUserService(req.userId);
   if (!user) {
-    return next(new ErrorResponse(`No user found with id: ${req.userId}`));
+    return next(new ErrorResponse(`No user found with id: ${req.userId}`, 404));
   }
   res.status(200).json({ success: true, statusCode: 200, data: user });
 });
