@@ -24,11 +24,9 @@ export const registerUser = async (name, username, email, password, role) => {
 // Login a user
 export const loginUser = async (email, password) => {
   try {
-    const response = await axios.post(`${API_URL}/login`, {
-      email,
-      password,
-    });
-    return response.data;
+    const response = await axios.post(`${API_URL}/login`, { email, password });
+    console.log('API login response:', response.data); // Log the response to debug
+    return response.data; // Ensure this structure
   } catch (error) {
     const handledError = handleApiError(error);
     console.error('Error logging in user:', handledError.message);

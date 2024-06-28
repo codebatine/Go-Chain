@@ -14,9 +14,13 @@ const Login = () => {
     try {
       const response = await loginUser(email, password);
       console.log('Login successful', response);
-      // Store token and redirect to dashboard
-      localStorage.setItem('token', response.data.token); // Store the token in local storage
-      navigate('/dashboard'); // Redirect to dashboard
+      
+      if (response && response.token) {
+        localStorage.setItem('token', response.token); // Store the token in local storage
+        navigate('/dashboard'); // Redirect to dashboard
+      } else {
+        setError('Login failed. Please try again.');
+      }
     } catch (err) {
       setError(err.message);
     }
