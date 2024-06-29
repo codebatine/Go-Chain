@@ -1,7 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import morgan from 'morgan';
-import cors from 'cors'; // Import the cors package
+import cors from 'cors';
 import blockchainRoutes from './routes/blockchainRoutes.mjs';
 import transactionRoutes from './routes/transactionRoutes.mjs';
 import userRoutes from './routes/userRoutes.mjs';
@@ -25,9 +25,9 @@ app.use(
   }),
 );
 
-app.use('/api', blockchainRoutes);
-app.use('/api/transactions', transactionRoutes);
 app.use('/api/auth', userRoutes);
+app.use('/api', blockchainRoutes);
+// app.use('/api/transactions', transactionRoutes);
 
 app.use(errorHandler);
 
