@@ -1,7 +1,9 @@
 import axios from 'axios';
 import { handleApiError } from './errorHandler';
 
-const API_URL = 'http://localhost:5000/api/auth';
+const API_URL = 'http://localhost:5000/api/auth'; // Update with your actual backend URL
+
+// Existing functions (user management)
 
 // Register a new user
 export const registerUser = async (name, username, email, password, role) => {
@@ -125,6 +127,38 @@ export const updateUser = async (userId, userData, token) => {
   } catch (error) {
     const handledError = handleApiError(error);
     console.error('Error updating user:', handledError.message);
+    throw handledError;
+  }
+};
+
+// Blockchain: Get blockchain data
+export const getBlockchain = async () => {
+  try {
+    const response = await axios.get(`${API_URL}/blockchain`);
+    return response.data;
+  } catch (error) {
+    const handledError = handleApiError(error);
+    console.error('Error fetching blockchain data:', handledError.message);
+    throw handledError;
+  }
+};
+
+// Blockchain: Create a new transaction
+export const createTransaction = async (transactionData, token) => {
+  try {
+    const response = await axios.post(
+      `${API_URL}/transactions/new`,
+      transactionData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    const handledError = handleApiError(error);
+    console.error('Error creating transaction:', handledError.message);
     throw handledError;
   }
 };

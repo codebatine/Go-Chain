@@ -40,10 +40,27 @@ const Dashboard = () => {
       <h1>Dashboard</h1>
       {error && <p>{error}</p>}
       {user ? (
-        <div>
+        <div className="dashboard-content">
           <p>Welcome, {user.name}</p>
           <p>Email: {user.email}</p>
           <button onClick={handleLogout}>Logout</button> {/* Logout button */}
+          {/* Placeholder for blockchain-specific information */}
+          <div className="blockchain-info">
+            <h2>Blockchain Information</h2>
+            {/* Placeholder for blockchain status, latest blocks, etc. */}
+            <p>Blockchain Status: Connected</p>
+            {/* Example: Display latest blocks */}
+            <div className="latest-blocks">
+              <h3>Latest Blocks</h3>
+              {/* Display latest blocks here */}
+              {/* Example block */}
+              <div className="block">
+                <p>Block #12345</p>
+                <p>Timestamp: 2024-06-28 12:00:00</p>
+                <p>Hash: abcdef1234567890</p>
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
         <p>Loading...</p>
