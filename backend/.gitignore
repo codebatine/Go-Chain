@@ -6,9 +6,6 @@ package-lock.json
 **/*.env
 dump.rdb
 
-# MongoDB
-data/
-
 # Build
 **/dist/
 **/build/
